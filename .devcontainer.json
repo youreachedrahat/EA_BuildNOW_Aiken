@@ -6,7 +6,7 @@
     "image": "nanuijaz/cardano-node-preview:9.1.0",
     //"dockerComposeFile": "docker-compose.yml",
     //"service": "ppp",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/home/ubuntu",
     //"shutdownAction": "stopCompose",
   
     // Configure tool-specific properties.
@@ -15,7 +15,8 @@
       "vscode": {
         // Add the IDs of extensions you want installed when the container is created.
         "extensions": [
-        //    "haskell.haskell",
+                "tx-pipe/aiken"
+          //    "haskell.haskell",
         //  "vigoo.stylish-haskell"
         ],
         "settings": {
