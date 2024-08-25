@@ -38,7 +38,7 @@ test tesging_foldl() {
     list.foldr(simplelist(), [], fn(x,xs) {[x, ..xs]}) == [1,2,3,4,5]
 }
 
-//more advance, move to a higher func04
+//Pairs (Tuples)
 use aiken/pairs
 
 fn f() {
