@@ -22,9 +22,21 @@ test main_test() {
 }
 
 test sum_test() {
-    sum(5, 6) == 11
+    sum(5, 6) == 11 &&
 }
 
 test sum_explicit_test() {
     sum_explicit(5, 6) == 11
+}
+
+
+
+
+fn sub(x, y) {
+    x-y
+}
+
+
+test sub_test() {
+    sub(6, 5) == 1
 }
