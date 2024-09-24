@@ -10,17 +10,17 @@ Lets create an environment variable as shortcut, you can make it permanent inclu
 If not, execute the following steps to create the address and fund it with test ada.
 ```bash
     cardano-cli address key-gen \
-    --verification-key-file payment1.vkey \
-    --signing-key-file payment1.skey
+    --verification-key-file bob_payment.vkey \
+    --signing-key-file bob_payment.skey
 
     cardano-cli stake-address key-gen \
-    --verification-key-file stake1.vkey \
-    --signing-key-file stake1.skey
+    --verification-key-file bob_stake.vkey \
+    --signing-key-file bob_stake.skey
 
     cardano-cli address build \
-    --payment-verification-key-file payment1.vkey \
-    --stake-verification-key-file stake1.vkey \
-    --out-file payment1.addr \
+    --payment-verification-key-file bob_payment.vkey \
+    --stake-verification-key-file bob_stake.vkey \
+    --out-file bob.addr \
     $PREVIEW
 ```
 
@@ -30,25 +30,28 @@ If not, execute the following steps to create the address and fund it with test 
 Generate necessary keys for the second account
 ```bash
     cardano-cli address key-gen \
-    --verification-key-file payment2.vkey \
-    --signing-key-file payment2.skey
+    --verification-key-file alice_payment.vkey \
+    --signing-key-file alice_payment.skey
 
     cardano-cli stake-address key-gen \
-    --verification-key-file stake2.vkey \
-    --signing-key-file stake2.skey
+    --verification-key-file alice_stake.vkey \
+    --signing-key-file alice_stake.skey
 
     cardano-cli address build \
-    --payment-verification-key-file payment2.vkey \
-    --stake-verification-key-file stake2.vkey \
-    --out-file payment2.addr \
+    --payment-verification-key-file alice_payment.vkey \
+    --stake-verification-key-file alice_stake.vkey \
+    --out-file alice.addr \
     $PREVIEW
 ```
 
 And check the UTxO for the payment address 
 ```bash    
-    cardano-cli query utxo --address addr_test1vzl0uq5su8jt90vwx6zv8mvp9x7hf90pnylrhcnh3afyx4gcf747v --testnet-magic 2
+    cardano-cli query utxo --address addr_test1qzd2q3guvcx3lcr9pk2k9kyjl8twllh9p0krc55r25gcvu7rasj76jfcz9urqwjks9tjvau2jur8cjmr8typ6lgm2t5sjjp3fe --testnet-magic 2
 
                                TxHash                                 TxIx        Amount
     --------------------------------------------------------------------------------------
     7b4956b103d47908318ee92aa0790ff4b36fe7940991f0be350c9085fc4da175     1        100000000000 lovelace + TxOutDatumHashNone
 ```
+
+
+cardano-cli query utxo --address $(cat ../../wallet/bob/bob.addr) --testnet-magic 2
