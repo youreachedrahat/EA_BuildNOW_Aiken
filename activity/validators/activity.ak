@@ -121,3 +121,66 @@ test maxwhen_test() {
 test maxn_test() {
   max_num_n([2, 4, 6, 7, 8, 9, 3, 2]) == Some(9)
 }
+
+// vowel exist check ================================================================
+// first element check vowel 
+// drop first element and recall
+// empty list return False
+
+const vowel_list = "aeiouAEIOU"
+
+fn vowel(string: ByteArray) -> Bool {
+  when bytearray.is_empty(string) is {
+    True -> False
+    False ->
+      if bytearray.index_of(vowel_list, bytearray.take(string, 0)) == None {
+        vowel(bytearray.drop(string, 1))
+      } else {
+        True
+      }
+  }
+}
+
+test vowel_check() {
+  vowel("faizan") == True
+}
+
+fn count_vowel(string: ByteArray, n: Int) -> Int {
+  when bytearray.is_empty(string) is {
+    True -> n
+    False ->
+      if bytearray.index_of(vowel_list, bytearray.take(string, 1)) == None {
+        count_vowel(bytearray.drop(string, 1), n)
+      } else {
+        count_vowel(bytearray.drop(string, 1), n + 1)
+      }
+  }
+}
+
+fn count_v(string: ByteArray) -> Int {
+  count_vowel(string, 0)
+}
+
+test count_vowel_check() {
+  count_v("faizan") == 3
+}
+
+//===================================================
+fn count_vowels3(x: ByteArray) -> Int {
+  let vowels = "aeiouAEIOU"
+  bytearray.foldl(
+    x,
+    0,
+    fn(byte, acc) {
+      if bytearray.index_of(vowels, bytearray.from_int_big_endian(byte, 1)) != None {
+        acc + 1
+      } else {
+        acc
+      }
+    },
+  )
+}
+
+test count_vowels_test3() {
+  count_vowels3("faizan") == 3
+}
