@@ -2,6 +2,7 @@ use aiken/collection/dict.{Dict}
 use aiken/collection/list
 use aiken/crypto.{DataHash}
 use cardano/address.{Address}
+use cardano/assets.{match}
 use cardano/transaction.{
   DatumHash, InlineDatum, Input, NoDatum, Output, OutputReference, Transaction,
   find_input,
@@ -32,7 +33,7 @@ validator savings {
           datum,
           tx_info,
           target,
-        )
+        ) && check_value(tx_info.inputs, tx_info.outputs, target)
       _ -> fail @"Invalid action"
     }
   }
@@ -52,13 +53,13 @@ fn updating_savings(
   utxo_ref: OutputReference,
 ) -> Bool {
   let c_datum: (DataHash, Data) = complete_datum(datum, tx_info.datums)
-  let address: Address = find_input_address(utxo_ref, tx_info.inputs)
+  let address: Address = find_input_address(utxo_ref, tx_info.inputs).address
   updated_output(c_datum, tx_info.outputs, address)
 }
 
-fn find_input_address(utxo_ref: OutputReference, inputs: List<Input>) -> Address {
+fn find_input_address(utxo_ref: OutputReference, inputs: List<Input>) -> Output {
   expect Some(input_utxo) = find_input(inputs, utxo_ref)
-  input_utxo.output.address
+  input_utxo.output
 }
 
 fn complete_datum(
@@ -88,6 +89,16 @@ fn updated_output(
       },
     )
   counter == 1
+}
+
+fn check_value(
+  inputs: List<Input>,
+  outputs: List<Output>,
+  utxo_ref: OutputReference,
+) {
+  let input: Output = find_input_address(utxo_ref, inputs)
+  expect Some(output) = list.find(outputs, fn(x) { x.address == input.address })
+  match(input.value, output.value, <)
 }
 
 /// Tests
