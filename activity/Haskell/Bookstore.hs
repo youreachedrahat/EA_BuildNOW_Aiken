@@ -173,12 +173,36 @@ mean' xs = sum' xs / length' xs
 
 
 
--- Turn a list into a palindrome, i.e. it should read the same both backwards and forwards. For example, given the list [1,2,3], your function should return [1,2,3,3,2,1]. 88 comments
--- Write a function that determines whether its input list is a palindrome. 95 comments
--- Create a function that sorts a list of lists based on the length of each sublist. (You may want to look at the sortBy function from the Data.List module.) 54 comments
+-- Turn a list into a palindrome, i.e. it should read the same both backwards and forwards. For example, given the list [1,2,3], your function should return [1,2,3,3,2,1].
+
+toPalindrome list = list ++ reverse' list
+                        -- where reverse (x:xs) = reverse xs ++ [x]
+                        --       reverse []     = []
+
+-- Write a function that determines whether its input list is a palindrome.
+
+
+palindromeCheck list = list == reverse' list
+reverse' (x:xs) = reverse' xs ++ [x]
+reverse' []     = []
+
+-- Create a function that sorts a list of lists based on the length of each sublist. (You may want to look at the sortBy function from the Data.List module.)
+
+
 -- Define a function that joins a list of lists together using a separator value. 
 -- join' ',' ["foo","bar","baz","quux"]
 -- "foo,bar,baz,quux"
+join sep (x:xs) = x ++ [sep] ++ join sep xs
+join _ [] = []
+
+
+
+-- Using the binary tree type that we defined earlier in this chapter, write a function that will determine the height of the tree. The height is the largest number of hops from the root to an Empty. For example, the tree Empty has height zero; Node "x" Empty Empty has height one; Node "x" Empty (Node "y" Empty Empty) has height two; and so on
+treeHeight :: Tree a -> Int
+treeHeight Empty = 0
+treeHeight (Node _ left right) = 1 + max (treeHeight left) (treeHeight right)
+
+
 
 
 
