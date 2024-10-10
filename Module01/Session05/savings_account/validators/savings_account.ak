@@ -1,13 +1,13 @@
 use aiken/collection/dict.{Dict}
 use aiken/collection/list
-use aiken/crypto.{DataHash}
+use aiken/crypto.{DataHash, VerificationKeyHash}
 use cardano/address.{Address}
 use cardano/transaction.{
   DatumHash, InlineDatum, Input, NoDatum, Output, OutputReference, Transaction,
 }
 
 pub type SavingsDatum {
-  saver: ByteArray,
+  saver: VerificationKeyHash,
 }
 
 /// - `0`: Retire
@@ -45,7 +45,10 @@ validator savings {
   }
 }
 
-fn signed_by(signer: ByteArray, signatories: List<ByteArray>) {
+fn signed_by(
+  signer: VerificationKeyHash,
+  signatories: List<VerificationKeyHash>,
+) {
   list.has(signatories, signer)
 }
 
