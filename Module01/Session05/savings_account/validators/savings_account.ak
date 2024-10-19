@@ -10,10 +10,10 @@ pub type SavingsDatum {
   saver: VerificationKeyHash,
 }
 
-/// - `0`: Retire
+/// - `0`: Withdraw
 /// - `1`: Increase deposit
 type Action =
-  Int
+   Int
 
 validator savings {
   spend(
@@ -25,7 +25,7 @@ validator savings {
     expect Some(datum) = datum
 
     when redeemer is {
-      // Retire:
+      // Withdraw:
       0 -> signed_by(datum.saver, tx_info.extra_signatories)
 
       // Increase deposit:
