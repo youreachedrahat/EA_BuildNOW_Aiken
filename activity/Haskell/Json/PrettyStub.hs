@@ -81,6 +81,26 @@ compact x = transform [x]
                 a `Concat` b -> transform (a:b:ds)
                 _ `Union` b  -> transform (b:ds)
 
+compact' x = transform [x]
+    where transform [] = ""
+          transform (d:ds)
+            | d == Empty = transform ds
+            | d == Char c = c : transform ds
+            | d == Text s = s ++ transform ds
+            | d == Line = '\n' : transform ds
+            | d == a `Concat` b = transform (a:b:ds)
+            | d == _ `Union` b = transform (b:ds)
+
+compact'' x = transform [x]
+  where
+    transform [] = ""
+    transform (Empty:ds) = transform ds
+    transform (Char c:ds) = c : transform ds
+    transform (Text s:ds) = s ++ transform ds
+    transform (Line:ds) = '\n' : transform ds
+    transform (a `Concat` b:ds) = transform (a:b:ds)
+    transform (_ `Union` b:ds) = transform (b:ds)            
+
 pretty width x = best 0 [x]
     where best col (d:ds) =
               case d of
@@ -96,6 +116,21 @@ pretty width x = best 0 [x]
           nicest col a b | (width - least) `fits` a = a
                          | otherwise                = b
                          where least = min width col
+
+
+pretty' width x = best 0 [x]
+    where best col (Empty:ds) = best col ds
+          best col (Char c:ds) = c :  best (col + 1) ds
+          best col (Text s:ds) = s ++ best (col + length s) ds
+          best col (Line:ds) ='\n' : best 0 ds
+          best col (a `Concat` b:ds) = best col (a:b:ds)
+          best col (a `Union` b:ds) = nicest col (best col (a:ds)) (best col (b:ds))
+          best _ _ = ""
+
+          nicest col a b | (width - least) `fits` a = a
+                         | otherwise                = b
+                         where least = min width col
+
 
 fits :: Int -> String -> Bool
 w `fits` _ | w < 0 = False
