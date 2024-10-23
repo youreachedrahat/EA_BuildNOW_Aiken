@@ -1,4 +1,4 @@
-// Anonymous functions
+//// Anonymous functions
 
 fn main(x: Int, y: Int) -> Int {
   let z =
@@ -10,13 +10,13 @@ test main_testset1() {
   main(3, 4) == 7
 }
 
-// FlowControl - blocks
-// A function can contain a sequence of expressions. However, any expression but the last one must be assigned to a variable using the let keyword
+// ## FlowControl - blocks
+// ## A function can contain a sequence of expressions. However, any expression but the last one must be assigned to a variable using the let keyword
 
 fn blocks() {
   let x: Int = {
     let a = 11
-    //True
+    // True
     let b = 22
     let c = a + b
     // Warning for unused identifier
@@ -33,7 +33,7 @@ fn usual_suspect(a: Bool, x: Int, y: Int) -> Int {
   }
 }
 
-// Pattern matching with `when *expression* is` 
+// ## Pattern matching with `when *expression* is` 
 
 fn patterns(i_can_only_count_2_4 x: Int) -> Int {
   when x is {

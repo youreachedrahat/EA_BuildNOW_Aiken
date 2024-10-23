@@ -1,21 +1,19 @@
 use aiken/collection/dict.{Dict}
 use aiken/collection/list
-use aiken/crypto.{DataHash}
+use aiken/crypto.{DataHash, VerificationKeyHash}
 use cardano/address.{Address}
 use cardano/transaction.{
   DatumHash, InlineDatum, Input, NoDatum, Output, OutputReference, Transaction,
-  find_input,
 }
 
 pub type SavingsDatum {
-  saver: ByteArray,
+  saver: VerificationKeyHash,
 }
 
+/// - `0`: Withdraw
+/// - `1`: Increase deposit
 type Action =
   Int
-
-// 0: withdraw
-// 1: increase deposit
 
 validator savings {
   spend(
@@ -25,14 +23,19 @@ validator savings {
     tx_info: Transaction,
   ) {
     expect Some(datum) = datum
+
     when redeemer is {
+      // Withdraw:
       0 -> signed_by(datum.saver, tx_info.extra_signatories)
+
+      // Increase deposit:
       1 ->
         signed_by(datum.saver, tx_info.extra_signatories) && updating_savings(
           datum,
           tx_info,
           target,
         )
+
       _ -> fail @"Invalid action"
     }
   }
@@ -42,7 +45,10 @@ validator savings {
   }
 }
 
-fn signed_by(signer: ByteArray, signatories: List<ByteArray>) {
+fn signed_by(
+  signer: VerificationKeyHash,
+  signatories: List<VerificationKeyHash>,
+) {
   list.has(signatories, signer)
 }
 
@@ -53,11 +59,12 @@ fn updating_savings(
 ) -> Bool {
   let c_datum: (DataHash, Data) = complete_datum(datum, tx_info.datums)
   let address: Address = find_input_address(utxo_ref, tx_info.inputs)
+
   updated_output(c_datum, tx_info.outputs, address)
 }
 
 fn find_input_address(utxo_ref: OutputReference, inputs: List<Input>) -> Address {
-  expect Some(input_utxo) = find_input(inputs, utxo_ref)
+  expect Some(input_utxo) = transaction.find_input(inputs, utxo_ref)
   input_utxo.output.address
 }
 
@@ -66,8 +73,10 @@ fn complete_datum(
   datums: Dict<DataHash, Data>,
 ) -> (DataHash, Data) {
   expect Some(data_hash) = dict.find(datums, input_datum)
+
   let data_hash: DataHash = data_hash
   let data: Data = input_datum
+
   (data_hash, data)
 }
 
@@ -87,6 +96,7 @@ fn updated_output(
         }
       },
     )
+
   counter == 1
 }
 
@@ -96,6 +106,7 @@ test datum_test() {
   let data2: Data = SavingsDatum { saver: "AFD82" }
   let data3: Data = SavingsDatum { saver: "AFD83" }
   let data4: Data = SavingsDatum { saver: "AFD84" }
+
   let datumst =
     dict.empty
       |> dict.insert("AFD81", data1)
