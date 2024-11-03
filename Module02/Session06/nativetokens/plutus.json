@@ -1,0 +1,194 @@
+{
+  "preamble": {
+    "title": "rcerrud/nativetokens",
+    "description": "Aiken contracts for project 'rcerrud/nativetokens'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.3+3d77b5c"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "eacoins.ea_coins.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/eacoins~1ConditionsRedeemer"
+        }
+      },
+      "compiledCode": "590180010100323232323232253330023232323232533233008300130093754004264a666012600460146ea80104c8c8c8c8c8c8c8c94ccc050c0580084c8c94ccc04cc03000454ccc058c054dd50048a8010b0a99980999b874800800454ccc058c054dd50048a8010b0b18099baa0081325333012300b30133754600260286ea80344c8c8cc004004dd6180c180c980c980c980c980c980c980c980c980b1baa01122533301800114a0264a66602c66e3cdd7180d0010020a51133003003001301a001375c602c602e602e60286ea80344c8cc88c94ccc058cdc3a4004602e6ea80044cdc48011bad301a301837540022940c010c05cdd51801980b9baa00230173018301830183018301830183018301537540206eb4c004c054dd50071180b980c0009180b0008b1bad30140013014002375c602400260240046eb4c040004c040008c038004c02cdd50020b1bae300c300a37540046e1d200016300a300b0023009001300900230070013004375400229309b2b2b9a5573aaae7955cfaba15745",
+      "hash": "5d555ff7b4b9d722e0e1d7e55f43e8e5fd69209ca891b7de93e94ab4"
+    },
+    {
+      "title": "eacoins.ea_coins.else",
+      "compiledCode": "590180010100323232323232253330023232323232533233008300130093754004264a666012600460146ea80104c8c8c8c8c8c8c8c94ccc050c0580084c8c94ccc04cc03000454ccc058c054dd50048a8010b0a99980999b874800800454ccc058c054dd50048a8010b0b18099baa0081325333012300b30133754600260286ea80344c8c8cc004004dd6180c180c980c980c980c980c980c980c980c980b1baa01122533301800114a0264a66602c66e3cdd7180d0010020a51133003003001301a001375c602c602e602e60286ea80344c8cc88c94ccc058cdc3a4004602e6ea80044cdc48011bad301a301837540022940c010c05cdd51801980b9baa00230173018301830183018301830183018301537540206eb4c004c054dd50071180b980c0009180b0008b1bad30140013014002375c602400260240046eb4c040004c040008c038004c02cdd50020b1bae300c300a37540046e1d200016300a300b0023009001300900230070013004375400229309b2b2b9a5573aaae7955cfaba15745",
+      "hash": "5d555ff7b4b9d722e0e1d7e55f43e8e5fd69209ca891b7de93e94ab4"
+    },
+    {
+      "title": "eanft.ea_nft.mint",
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/eanft~1ConditionsRedeemer"
+        }
+      },
+      "parameters": [
+        {
+          "title": "unique_utxo",
+          "schema": {
+            "$ref": "#/definitions/cardano~1transaction~1OutputReference"
+          }
+        },
+        {
+          "title": "token_name",
+          "schema": {
+            "$ref": "#/definitions/AssetName"
+          }
+        }
+      ],
+      "compiledCode": "59024c01010032323232323232223225333005323232323253323300b3001300c3754004264a6660186004601a6ea80104c8c8c8c8c8c8c8c94ccc05cc0680084c94ccc054c8cc004004dd6180d980c1baa01022533301a00114a0264a66603066ebcc010c068dd5180e80100b8a51133003003001301d00115332330163232533301b301e00213253330193004375a6036004266e3c0040585281bae301900116301c001325333017300230183754002297adef6c6013756603860326ea8004c8cc004004dd5980e180e980e980e980e980c9baa01122533301b00114c103d87a8000132323232533301c337220220042a66603866e3c0440084cdd2a4000660406e980052f5c02980103d87a80001330060060033756603a0066eb8c06c008c07c008c0740044c94ccc05cc0340044c8c8cc004004dd6180f180f980f980f980f980f980f980f980f980d9baa01322533301d00114a0264a66603666e3cdd718100010020a511330030030013020001375c6038603a603a60326ea803c54ccc05cc0080044c8cc88c94ccc06cc018c070dd5000899b89002375a6040603a6ea80045281803180e1baa3003301c3754004603a603c603c603c603c603c603c603c60346ea8048dd69800980d1baa0102301d301e00114a06eb4c008c060dd50071b87480085280a502301a00116375a603000260300046eb8c058004c058008dd6980a000980a0011bad3012001300e37540082c6eb8c040c034dd50011b874800058c038c03c008c034004c034008c02c004c01cdd50008a4c26cac6eb80055cd2ab9d5573caae7d5d02ba157441",
+      "hash": "e1ae5b3798df75354b09826a0601eb1073dc5f937a1596b9ecd948dd"
+    },
+    {
+      "title": "eanft.ea_nft.else",
+      "parameters": [
+        {
+          "title": "unique_utxo",
+          "schema": {
+            "$ref": "#/definitions/cardano~1transaction~1OutputReference"
+          }
+        },
+        {
+          "title": "token_name",
+          "schema": {
+            "$ref": "#/definitions/AssetName"
+          }
+        }
+      ],
+      "compiledCode": "59024c01010032323232323232223225333005323232323253323300b3001300c3754004264a6660186004601a6ea80104c8c8c8c8c8c8c8c94ccc05cc0680084c94ccc054c8cc004004dd6180d980c1baa01022533301a00114a0264a66603066ebcc010c068dd5180e80100b8a51133003003001301d00115332330163232533301b301e00213253330193004375a6036004266e3c0040585281bae301900116301c001325333017300230183754002297adef6c6013756603860326ea8004c8cc004004dd5980e180e980e980e980e980c9baa01122533301b00114c103d87a8000132323232533301c337220220042a66603866e3c0440084cdd2a4000660406e980052f5c02980103d87a80001330060060033756603a0066eb8c06c008c07c008c0740044c94ccc05cc0340044c8c8cc004004dd6180f180f980f980f980f980f980f980f980f980d9baa01322533301d00114a0264a66603666e3cdd718100010020a511330030030013020001375c6038603a603a60326ea803c54ccc05cc0080044c8cc88c94ccc06cc018c070dd5000899b89002375a6040603a6ea80045281803180e1baa3003301c3754004603a603c603c603c603c603c603c603c60346ea8048dd69800980d1baa0102301d301e00114a06eb4c008c060dd50071b87480085280a502301a00116375a603000260300046eb8c058004c058008dd6980a000980a0011bad3012001300e37540082c6eb8c040c034dd50011b874800058c038c03c008c034004c034008c02c004c01cdd50008a4c26cac6eb80055cd2ab9d5573caae7d5d02ba157441",
+      "hash": "e1ae5b3798df75354b09826a0601eb1073dc5f937a1596b9ecd948dd"
+    }
+  ],
+  "definitions": {
+    "Action": {
+      "title": "Action",
+      "dataType": "integer"
+    },
+    "AssetName": {
+      "title": "AssetName",
+      "dataType": "bytes"
+    },
+    "ByteArray": {
+      "title": "ByteArray",
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "cardano/transaction/OutputReference": {
+      "title": "OutputReference",
+      "description": "An `OutputReference` is a unique reference to an output on-chain. The `output_index`\n corresponds to the position in the output list of the transaction (identified by its id)\n that produced that output",
+      "anyOf": [
+        {
+          "title": "OutputReference",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "transaction_id",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "output_index",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "eacoins/Action": {
+      "title": "Action",
+      "anyOf": [
+        {
+          "title": "Owner",
+          "description": "{\"constructor\":0,fields:[]}",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Time",
+          "description": "\"constructor\":1,fields:[]}",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "eacoins/ConditionsRedeemer": {
+      "title": "ConditionsRedeemer",
+      "description": "{\"constreaNFTctor\":0,fields[{\"constructor\":0,fields:[]},{\"int\": 1713194931000},{\"bytes\": \"d40e3e791bead1fd8c003f1227906b66a2a1c04e59d663798017db71\"},{\"int\": 50}]}",
+      "anyOf": [
+        {
+          "title": "ConditionsRedeemer",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "action",
+              "$ref": "#/definitions/eacoins~1Action"
+            },
+            {
+              "title": "deadline",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "owner",
+              "$ref": "#/definitions/VerificationKeyHash"
+            },
+            {
+              "title": "price",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "eanft/ConditionsRedeemer": {
+      "title": "ConditionsRedeemer",
+      "description": "{\"constructor\":0,fields[{\"int\":0},{\"int\": 1713194931000},{\"bytes\": \"d40e3e791bead1fd8c003f1227906b66a2a1c04e59d663798017db71\"},{\"int\": 50}]}",
+      "anyOf": [
+        {
+          "title": "ConditionsRedeemer",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "action",
+              "$ref": "#/definitions/Action"
+            },
+            {
+              "title": "deadline",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "owner",
+              "$ref": "#/definitions/VerificationKeyHash"
+            },
+            {
+              "title": "price",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

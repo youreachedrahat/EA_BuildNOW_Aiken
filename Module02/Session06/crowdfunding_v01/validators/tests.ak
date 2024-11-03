@@ -43,4 +43,51 @@ test cancel_campaign_v01() {
     ) == False,
   }
 }
-// test update_campaign_v01() {}
+
+test update_campaign_v01() {
+  let utxo_ref = OutputReference("", 0)
+  let tx_info =
+    Transaction { ..transaction.placeholder, extra_signatories: ["AFDB"] }
+  let datum =
+    CFdatum {
+      campaign_id: 1,
+      title: "Demo Campaign",
+      goal: 100000000,
+      creator: "AFDA",
+      backer: "AFDB",
+      amount: 0,
+      deadline: 100,
+      current_funds: 0,
+    }
+  let redeemer = CFredeemer { campaign_id: 1, action: 1, amount: 0, backer: "" }
+  campaign_management_v01.manage_campaign.spend(
+    Some(datum),
+    redeemer,
+    utxo_ref,
+    tx_info,
+  ) == True
+}
+
+test claim_campaign_v01() {
+  let utxo_ref = OutputReference("", 0)
+  let tx_info =
+    Transaction { ..transaction.placeholder, extra_signatories: ["AFDA"] }
+  let datum =
+    CFdatum {
+      campaign_id: 1,
+      title: "Demo Campaign",
+      goal: 100000000,
+      creator: "AFDA",
+      backer: "AFDB",
+      amount: 0,
+      deadline: 100,
+      current_funds: 100000000,
+    }
+  let redeemer = CFredeemer { campaign_id: 1, action: 2, amount: 0, backer: "" }
+  campaign_management_v01.manage_campaign.spend(
+    Some(datum),
+    redeemer,
+    utxo_ref,
+    tx_info,
+  ) == True
+}
