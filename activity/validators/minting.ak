@@ -30,14 +30,14 @@ fn must_be_signed_by(
 }
 
 test minter() {
-  let assetx = from_asset("pppp", "r", 10)
+  False
+  // let assetx = from_asset("pppp", "r", 10)
   // let tx =
   // Transaction {
   //   ..transaction.placeholder,
   //   extra_signatories: ["PKH"],
   //   inputs.output.value: assetx,
   // }
-  let tx = Transaction { ..transaction.placeholder, extra_signatories: ["PKH"] }
-
-  r_minter.mint("pppp", "PKH") == False
+  // let tx = Transaction { ..transaction.placeholder, extra_signatories: ["PKH"] }
+  // r_minter.mint("pppp", "PKH") == False
 }
