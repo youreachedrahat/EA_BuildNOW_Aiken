@@ -1,5 +1,5 @@
-use campaign_management_v01.{CFdatum, CFredeemer}
-use cardano/transaction.{OutputReference, Transaction}
+// use campaign_management_v01.{CFdatum, CFredeemer}
+// use cardano/transaction.{OutputReference, Transaction}
 
 test cancel_campaign_v01() {
   let utxo_ref = OutputReference("", 0)
