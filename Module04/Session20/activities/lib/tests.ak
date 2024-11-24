@@ -1013,7 +1013,49 @@ test must_update_campaign_state_test_finished_negative() fail {
 
   must_update_campaign_state(tx, "PolicyId_2", Finished)
 }
+
+test must_spend_own_utxo_test() {
+  let backer_inputs =
+    [
+      Input {
+        output_reference: OutputReference("TxHash_1", 1),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer1", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_2", 2),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer2", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_3", 3),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer3", "")),
+          reference_script: None,
+        },
+      },
+    ]
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      inputs: backer_inputs,
+      extra_signatories: ["Backer1"],
+    }
+  and {
+    must_spend_own_utxo(tx, OutputReference("TxHash_1", 1)),
+    !must_spend_own_utxo(tx, OutputReference("TxHash_2", 2)),
+  }
+}
 // TODO:
-// must_spend_own_utxo
 // must_have_been_cancelled
 // must_refund
