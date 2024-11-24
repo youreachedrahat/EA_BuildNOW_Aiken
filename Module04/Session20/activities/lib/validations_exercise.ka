@@ -62,7 +62,7 @@ pub fn must_resend_state_token(
       }
     }
 
-  todo @"There is onlye 1 transaction output holding the STATE_TOKEN with target_datum"
+  todo @"There must be 1 transaction output holding the STATE_TOKEN with target_datum"
 }
 
 /// During campaign creation, a state token must be minted and sent to self contract address
