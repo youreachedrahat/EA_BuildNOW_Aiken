@@ -4,11 +4,10 @@ use cardano/transaction.{
   InlineDatum, Input, NoDatum, Output, OutputReference, Transaction,
 }
 use validations_answers.{
-  BackerDatum, CampaignDatum, CampaignState, Cancelled, Finished, PaymentKeyHash,
-  Running, StakeKeyHash, must_consume_state_token, must_have_been_cancelled,
-  must_mint_prize_tokens, must_mint_state_token, must_reach_goal, must_refund,
-  must_resend_state_token, must_spend_own_utxo, must_update_campaign_state,
-  state_token,
+  CampaignDatum, Cancelled, Finished, Running, must_consume_state_token,
+  must_have_been_cancelled, must_mint_prize_tokens, must_mint_state_token,
+  must_reach_goal, must_refund, must_resend_state_token, must_spend_own_utxo,
+  must_update_campaign_state, state_token,
 }
 
 test must_consume_state_token_test() {
@@ -23,7 +22,7 @@ test must_consume_state_token_test() {
             value: assets.from_asset_list(
               [
                 Pair("", [Pair("", 2_000_000)]),
-                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
               ],
             ),
             datum: InlineDatum(
@@ -73,7 +72,7 @@ test must_resend_state_token_test() {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -121,7 +120,7 @@ test must_mint_state_token_test_positive() {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -145,21 +144,12 @@ test must_mint_state_token_test_negative_1() fail {
   let invalid_pkh = "InvalidKeyHash"
 
   let nonce = OutputReference("Nonce", 1)
-  let wrong = OutputReference("Wrong", 2)
 
   let target_datum =
     CampaignDatum {
       name: "Campaign Name",
       goal: 9_000_000_000,
       deadline: 1928374650000,
-      creator: ("PaymentKeyHash", "StakeKeyHash"),
-      state: Running,
-    }
-  let wrong_datum =
-    CampaignDatum {
-      name: "Campaign Name",
-      goal: 800_000_000,
-      deadline: 1828374650000,
       creator: ("PaymentKeyHash", "StakeKeyHash"),
       state: Running,
     }
@@ -184,7 +174,7 @@ test must_mint_state_token_test_negative_1() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -205,7 +195,6 @@ test must_mint_state_token_test_negative_1() fail {
 
 test must_mint_state_token_test_negative_2() fail {
   let creator_pkh = "VerificationKeyHash"
-  let invalid_pkh = "InvalidKeyHash"
 
   let nonce = OutputReference("Nonce", 1)
   let wrong = OutputReference("Wrong", 2)
@@ -215,14 +204,6 @@ test must_mint_state_token_test_negative_2() fail {
       name: "Campaign Name",
       goal: 9_000_000_000,
       deadline: 1928374650000,
-      creator: ("PaymentKeyHash", "StakeKeyHash"),
-      state: Running,
-    }
-  let wrong_datum =
-    CampaignDatum {
-      name: "Campaign Name",
-      goal: 800_000_000,
-      deadline: 1828374650000,
       creator: ("PaymentKeyHash", "StakeKeyHash"),
       state: Running,
     }
@@ -247,7 +228,7 @@ test must_mint_state_token_test_negative_2() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -268,24 +249,13 @@ test must_mint_state_token_test_negative_2() fail {
 
 test must_mint_state_token_test_negative_3() fail {
   let creator_pkh = "VerificationKeyHash"
-  let invalid_pkh = "InvalidKeyHash"
-
   let nonce = OutputReference("Nonce", 1)
-  let wrong = OutputReference("Wrong", 2)
 
   let target_datum =
     CampaignDatum {
       name: "Campaign Name",
       goal: 9_000_000_000,
       deadline: 1928374650000,
-      creator: ("PaymentKeyHash", "StakeKeyHash"),
-      state: Running,
-    }
-  let wrong_datum =
-    CampaignDatum {
-      name: "Campaign Name",
-      goal: 800_000_000,
-      deadline: 1828374650000,
       creator: ("PaymentKeyHash", "StakeKeyHash"),
       state: Running,
     }
@@ -310,7 +280,7 @@ test must_mint_state_token_test_negative_3() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -331,10 +301,7 @@ test must_mint_state_token_test_negative_3() fail {
 
 test must_mint_state_token_test_negative_4() fail {
   let creator_pkh = "VerificationKeyHash"
-  let invalid_pkh = "InvalidKeyHash"
-
   let nonce = OutputReference("Nonce", 1)
-  let wrong = OutputReference("Wrong", 2)
 
   let target_datum =
     CampaignDatum {
@@ -373,7 +340,7 @@ test must_mint_state_token_test_negative_4() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(target_datum),
@@ -670,8 +637,6 @@ test must_reach_goal_test() {
       },
     ]
 
-  let tx = Transaction { ..transaction.placeholder, inputs: backer_inputs }
-
   and {
     must_reach_goal(backer_inputs, 120_000_000),
     !must_reach_goal(backer_inputs, 9_000_000_000),
@@ -690,7 +655,7 @@ test must_update_campaign_state_test_cancelled() {
             value: assets.from_asset_list(
               [
                 Pair("", [Pair("", 2_000_000)]),
-                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
               ],
             ),
             datum: InlineDatum(
@@ -712,7 +677,7 @@ test must_update_campaign_state_test_cancelled() {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(
@@ -802,7 +767,7 @@ test must_update_campaign_state_test_finished() {
             value: assets.from_asset_list(
               [
                 Pair("", [Pair("", 2_000_000)]),
-                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
               ],
             ),
             datum: InlineDatum(
@@ -825,7 +790,7 @@ test must_update_campaign_state_test_finished() {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(
@@ -858,7 +823,7 @@ test must_update_campaign_state_test_cancelled_negative() fail {
             value: assets.from_asset_list(
               [
                 Pair("", [Pair("", 2_000_000)]),
-                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
               ],
             ),
             datum: InlineDatum(
@@ -880,7 +845,7 @@ test must_update_campaign_state_test_cancelled_negative() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(
@@ -970,7 +935,7 @@ test must_update_campaign_state_test_finished_negative() fail {
             value: assets.from_asset_list(
               [
                 Pair("", [Pair("", 2_000_000)]),
-                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
               ],
             ),
             datum: InlineDatum(
@@ -993,7 +958,7 @@ test must_update_campaign_state_test_finished_negative() fail {
           value: assets.from_asset_list(
             [
               Pair("", [Pair("", 2_000_000)]),
-              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              Pair("PolicyId_1", [Pair(state_token, 1)]),
             ],
           ),
           datum: InlineDatum(
@@ -1056,6 +1021,223 @@ test must_spend_own_utxo_test() {
     !must_spend_own_utxo(tx, OutputReference("TxHash_2", 2)),
   }
 }
-// TODO:
-// must_have_been_cancelled
-// must_refund
+
+test must_have_been_cancelled_test_positive() {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      reference_inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Cancelled,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+    }
+  must_have_been_cancelled(tx, "PolicyId_1")
+}
+
+test must_have_been_cancelled_test_negative() fail {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      reference_inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Cancelled,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+    }
+  must_have_been_cancelled(tx, "PolicyId_2")
+}
+
+test must_refund_test_positive() {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      reference_inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Cancelled,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash_1", 1),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+            datum: InlineDatum(("Backer1", "")),
+            reference_script: None,
+          },
+        },
+      ],
+      outputs: [
+        Output {
+          address: address.from_verification_key("Backer1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: NoDatum,
+          reference_script: None,
+        },
+      ],
+      extra_signatories: ["Backer1"],
+    }
+  must_refund(tx, "PolicyId_1", OutputReference("TxHash_1", 1))
+}
+
+test must_refund_test_negative_1() fail {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      reference_inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Cancelled,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash_1", 1),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+            datum: InlineDatum(("Backer1", "")),
+            reference_script: None,
+          },
+        },
+      ],
+      outputs: [
+        Output {
+          address: address.from_verification_key("Backer1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: NoDatum,
+          reference_script: None,
+        },
+      ],
+      extra_signatories: ["Backer1"],
+    }
+  must_refund(tx, "PolicyId_2", OutputReference("TxHash_1", 1))
+}
+
+test must_refund_test_negative_2() fail {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      reference_inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair(state_token, 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Cancelled,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash_1", 1),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+            datum: InlineDatum(("Backer1", "")),
+            reference_script: None,
+          },
+        },
+      ],
+      outputs: [
+        Output {
+          address: address.from_verification_key("Backer1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: NoDatum,
+          reference_script: None,
+        },
+      ],
+      extra_signatories: ["Backer1"],
+    }
+  must_refund(tx, "PolicyId_1", OutputReference("TxHash_2", 2))
+}
