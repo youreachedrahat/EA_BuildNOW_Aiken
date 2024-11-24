@@ -36,7 +36,7 @@ test minter() {
   // Transaction {
   //   ..transaction.placeholder,
   //   extra_signatories: ["PKH"],
-  //   inputs.output.value: assetx,
+  //   inputs.outp ut.value: assetx,
   // }
   // let tx = Transaction { ..transaction.placeholder, extra_signatories: ["PKH"] }
   // r_minter.mint("pppp", "PKH") == False
