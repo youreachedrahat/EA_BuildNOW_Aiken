@@ -677,8 +677,343 @@ test must_reach_goal_test() {
     !must_reach_goal(backer_inputs, 9_000_000_000),
   }
 }
+
+test must_update_campaign_state_test_cancelled() {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Running,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+      outputs: [
+        Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list(
+            [
+              Pair("", [Pair("", 2_000_000)]),
+              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+            ],
+          ),
+          datum: InlineDatum(
+            CampaignDatum {
+              name: "Campaign Name",
+              goal: 9_000_000_000,
+              deadline: 1928374650000,
+              creator: ("PaymentKeyHash", "StakeKeyHash"),
+              state: Cancelled,
+            },
+          ),
+          reference_script: None,
+        },
+      ],
+    }
+
+  must_update_campaign_state(tx, "PolicyId_1", Cancelled)
+}
+
+test must_update_campaign_state_test_finished() {
+  let backer_inputs =
+    [
+      Input {
+        output_reference: OutputReference("TxHash_1", 1),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer1", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_2", 2),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer2", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_3", 3),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer3", "")),
+          reference_script: None,
+        },
+      },
+    ]
+  let backer_outputs =
+    [
+      Output {
+        address: address.from_verification_key("Backer1"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer1", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+      Output {
+        address: address.from_verification_key("Backer2"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer2", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+      Output {
+        address: address.from_verification_key("Backer3"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer3", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+    ]
+
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Running,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+        ..backer_inputs
+      ],
+      outputs: [
+        Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list(
+            [
+              Pair("", [Pair("", 2_000_000)]),
+              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+            ],
+          ),
+          datum: InlineDatum(
+            CampaignDatum {
+              name: "Campaign Name",
+              goal: 9_000_000_000,
+              deadline: 1928374650000,
+              creator: ("PaymentKeyHash", "StakeKeyHash"),
+              state: Finished,
+            },
+          ),
+          reference_script: None,
+        },
+        ..backer_outputs
+      ],
+    }
+
+  must_update_campaign_state(tx, "PolicyId_1", Finished)
+}
+
+test must_update_campaign_state_test_cancelled_negative() fail {
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Running,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+      ],
+      outputs: [
+        Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list(
+            [
+              Pair("", [Pair("", 2_000_000)]),
+              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+            ],
+          ),
+          datum: InlineDatum(
+            CampaignDatum {
+              name: "Campaign Name",
+              goal: 9_000_000_000,
+              deadline: 1928374650000,
+              creator: ("PaymentKeyHash", "StakeKeyHash"),
+              state: Cancelled,
+            },
+          ),
+          reference_script: None,
+        },
+      ],
+    }
+
+  must_update_campaign_state(tx, "PolicyId_2", Cancelled)
+}
+
+test must_update_campaign_state_test_finished_negative() fail {
+  let backer_inputs =
+    [
+      Input {
+        output_reference: OutputReference("TxHash_1", 1),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer1", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_2", 2),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer2", "")),
+          reference_script: None,
+        },
+      },
+      Input {
+        output_reference: OutputReference("TxHash_3", 3),
+        output: Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list([Pair("", [Pair("", 3_000_000_000)])]),
+          datum: InlineDatum(("Backer3", "")),
+          reference_script: None,
+        },
+      },
+    ]
+  let backer_outputs =
+    [
+      Output {
+        address: address.from_verification_key("Backer1"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer1", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+      Output {
+        address: address.from_verification_key("Backer2"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer2", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+      Output {
+        address: address.from_verification_key("Backer3"),
+        value: assets.from_asset_list(
+          [Pair("PolicyId_1", [Pair("Backer3", 1)])],
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+    ]
+
+  let tx =
+    Transaction {
+      ..transaction.placeholder,
+      inputs: [
+        Input {
+          output_reference: OutputReference("TxHash", 0),
+          output: Output {
+            address: address.from_script("PolicyId_1"),
+            value: assets.from_asset_list(
+              [
+                Pair("", [Pair("", 2_000_000)]),
+                Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+              ],
+            ),
+            datum: InlineDatum(
+              CampaignDatum {
+                name: "Campaign Name",
+                goal: 9_000_000_000,
+                deadline: 1928374650000,
+                creator: ("PaymentKeyHash", "StakeKeyHash"),
+                state: Running,
+              },
+            ),
+            reference_script: None,
+          },
+        },
+        ..backer_inputs
+      ],
+      outputs: [
+        Output {
+          address: address.from_script("PolicyId_1"),
+          value: assets.from_asset_list(
+            [
+              Pair("", [Pair("", 2_000_000)]),
+              Pair("PolicyId_1", [Pair("STATE_TOKEN", 1)]),
+            ],
+          ),
+          datum: InlineDatum(
+            CampaignDatum {
+              name: "Campaign Name",
+              goal: 9_000_000_000,
+              deadline: 1928374650000,
+              creator: ("PaymentKeyHash", "StakeKeyHash"),
+              state: Finished,
+            },
+          ),
+          reference_script: None,
+        },
+        ..backer_outputs
+      ],
+    }
+
+  must_update_campaign_state(tx, "PolicyId_2", Finished)
+}
 // TODO:
-// must_update_campaign_state
 // must_spend_own_utxo
 // must_have_been_cancelled
 // must_refund
